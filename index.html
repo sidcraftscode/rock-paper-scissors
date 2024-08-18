@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, Paper, Scissors Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="homescreen" class="text-center bg-gray-100 h-screen w-screen flex justify-center items-center p-4">
+        <div>
+            <div class="font-mono text-4xl sm:text-6xl tracking-tighter mb-6 font-semibold">Rock Paper Scissors</div>
+            <button onclick="hideHome()" class="px-6 h-12 uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 hover:bg-teal-300 text-black">Play now</button>
+        </div>
+    </div>
+    <div id="gamescreen" class="justify-center flex h-screen w-screen items-center text-center font-mono">
+        <div class="mx-auto">
+            <div class="flex mb-8 justify-center space-x-2">
+                <div id="round1" class="rounded-full h-12 w-12 border-2 border-black"></div>
+                <div id="round2" class="rounded-full h-12 w-12 border-2 border-black"></div>
+                <div id="round3" class="rounded-full h-12 w-12 border-2 border-black"></div>
+                <div id="round4" class="rounded-full h-12 w-12 border-2 border-black"></div>
+                <div id="round5" class="rounded-full h-12 w-12 border-2 border-black"></div>
+            </div>
+            <div class="mx-auto mb-4 grid gap-2 sm:grid-cols-3">
+                <button onclick="makeChoice('rock')" class="mx-auto block h-12 w-full border-2 border-black bg-teal-400 px-6 font-semibold uppercase tracking-wider text-black hover:bg-teal-300">Rock</button>
+                <button onclick="makeChoice('paper')" class="mx-auto block h-12 w-full border-2 border-black bg-rose-400 px-6 font-semibold uppercase tracking-wider text-black hover:bg-rose-300">Paper</button>
+                <button onclick="makeChoice('scissors')" class="mx-auto block h-12 w-full border-2 border-black bg-cyan-400 px-6 font-semibold uppercase tracking-wider text-black hover:bg-cyan-300">Scissors</button>
+            </div>
+            <div id="result" class="mx-auto mb-4 w-full text-xl font-semibold"></div>
+            <div id="score" class="mx-auto w-full text-2xl font-bold">You: 0, Computer: 0</div>
+
+        </div>
+    </div>
+    <div id="newgamemodal" class="absolute inset-0 flex h-screen w-screen items-center justify-center bg-black bg-opacity-20 font-mono">
+        <div class="mx-auto w-screen max-w-sm bg-white pt-6 text-center text-black sm:text-5xl">
+          <div id="gamestatus" class="text-4xl font-semibold"></div>
+          <div id="finalscore" class="tracking-tigher mb-4 text-xl"></div>
+          <div onclick="backToHome()" class="mx-4 mb-4 border-2 border-black bg-rose-400 px-6 py-3 text-xl font-semibold uppercase tracking-wider text-black hover:bg-rose-300">Back to home screen</div>
+          <div onclick="newGame()" class="mx-4 mb-4 border-2 border-black bg-teal-400 px-6 py-3 text-xl font-semibold uppercase tracking-wider text-black hover:bg-teal-300">New game</div>
+        </div>
+    </div>
+               
+    <script>
+        var home = document.getElementById("homescreen");
+        var game = document.getElementById("gamescreen");
+        var modal = document.getElementById("newgamemodal");
+        var currentRound = 1;
+        const maxRounds = 5;
+
+        home.style.display = "flex";
+        game.style.display = "none";
+        modal.style.display = "none";
+
+        function hideHome() {
+            home.style.display = "none";
+            game.style.display = "flex";
+        }
+
+        let humanScore = 0;
+        let computerScore = 0;
+
+        function getComputerChoice() {
+            const computerChoices = ["rock", "paper", "scissors"];
+            
+            // Fisher-Yates Shuffle
+            for (let i = computerChoices.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [computerChoices[i], computerChoices[j]] = [computerChoices[j], computerChoices[i]];
+            }
+            
+            return computerChoices[0];
+        }
+
+
+        function playRound(humanChoice, computerChoice) {
+            const rules = {
+                'rock': { 'scissors': 'human', 'paper': 'computer' },
+                'paper': { 'rock': 'human', 'scissors': 'computer' },
+                'scissors': { 'paper': 'human', 'rock': 'computer' }
+            };
+            const result = rules[humanChoice][computerChoice];
+            if (result === 'human') {
+                humanScore++;
+                return 'win';
+            } else if (result === 'computer') {
+                computerScore++;
+                return 'lose';
+            } else {
+                return 'tie';
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = `You: ${humanScore}, Computer: ${computerScore}`;
+        }
+
+        function makeChoice(humanChoice) {
+            if (currentRound > maxRounds) {
+                return;
+            }
+
+            const computerChoice = getComputerChoice();
+            const roundResult = playRound(humanChoice, computerChoice);
+            let resultMessage = '';
+
+            if (roundResult === 'win') {
+                document.getElementById(`round${currentRound}`).style.backgroundColor = '#84cc16';
+                resultMessage = `You win! ${humanChoice} beats ${computerChoice}`;
+            } else if (roundResult === 'lose') {
+                document.getElementById(`round${currentRound}`).style.backgroundColor = '#f43f5e';
+                resultMessage = `You lose! ${computerChoice} beats ${humanChoice}!`;
+            } else {
+                document.getElementById(`round${currentRound}`).style.backgroundColor = '#78716c';
+                resultMessage = `It's a tie!`;
+            }
+
+            document.getElementById('result').innerHTML = `I chose ${computerChoice}<br>${resultMessage}`;
+            updateScore();
+
+            currentRound++;
+
+            if (currentRound > maxRounds) {
+                setTimeout(() => {
+                    modal.style.display = "flex";
+                    if (humanScore > computerScore) {
+                        document.getElementById('gamestatus').textContent = "You win!";
+                    } else if (humanScore < computerScore) {
+                        document.getElementById('gamestatus').textContent = "You lose!";
+                    } else {
+                        document.getElementById('gamestatus').textContent = "It's a tie!";
+                    }
+                    document.getElementById('finalscore').innerHTML = `Your Score: ${humanScore}/5<br>Computer Score: ${computerScore}/5`;
+                }, 100);
+            }
+        }
+        function newGame() {
+            humanScore = 0;
+            computerScore = 0;
+            currentRound = 1;
+            document.getElementById('result').textContent = '';
+            document.getElementById('score').textContent = 'You: 0, Computer: 0';
+            document.getElementById('round1').style.backgroundColor = 'transparent';
+            document.getElementById('round2').style.backgroundColor = 'transparent';
+            document.getElementById('round3').style.backgroundColor = 'transparent';
+            document.getElementById('round4').style.backgroundColor = 'transparent';
+            document.getElementById('round5').style.backgroundColor = 'transparent';
+            modal.style.display = "none";
+        }
+        function backToHome() {
+            home.style.display = "flex";
+            game.style.display = "none";
+            modal.style.display = "none";
+            newGame();
+        }
+    </script>
+</body>
+</html>
