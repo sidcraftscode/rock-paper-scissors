@@ -22,13 +22,13 @@
                 <div id="round4" class="rounded-full h-12 w-12 border-2 border-black"></div>
                 <div id="round5" class="rounded-full h-12 w-12 border-2 border-black"></div>
             </div>
-            <div class="mx-auto mb-4 grid gap-2 sm:grid-cols-3">
-                <button onclick="makeChoice('rock')" class="mx-auto block h-12 w-full border-2 border-black bg-teal-400 px-6 font-semibold uppercase tracking-wider text-black hover:bg-teal-300">Rock</button>
-                <button onclick="makeChoice('paper')" class="mx-auto block h-12 w-full border-2 border-black bg-rose-400 px-6 font-semibold uppercase tracking-wider text-black hover:bg-rose-300">Paper</button>
-                <button onclick="makeChoice('scissors')" class="mx-auto block h-12 w-full border-2 border-black bg-cyan-400 px-6 font-semibold uppercase tracking-wider text-black hover:bg-cyan-300">Scissors</button>
+            <div class="mx-auto mb-4 grid p-2 sm:p-0 gap-2 grid-cols-3">
+                <button onclick="makeChoice('rock')" class="mx-auto block h-12 w-full border-2 border-black bg-teal-400 sm:px-6 font-semibold text-sm uppercase tracking-wider text-black hover:bg-teal-300">Rock</button>
+                <button onclick="makeChoice('paper')" class="mx-auto block h-12 w-full border-2 border-black bg-rose-400 sm:px-6 font-semibold text-sm uppercase tracking-wider text-black hover:bg-rose-300">Paper</button>
+                <button onclick="makeChoice('scissors')" class="mx-auto block h-12 w-full border-2 border-black bg-cyan-400 sm:px-6 font-semibold text-sm uppercase tracking-wider text-black hover:bg-cyan-300">Scissors</button>
             </div>
             <div id="result" class="mx-auto mb-4 w-full text-xl font-semibold"></div>
-            <div id="score" class="mx-auto w-full text-2xl font-bold">You: 0, Computer: 0</div>
+            <div id="score" class="px-4 mx-auto w-full text-2xl font-bold">You: 0, Computer: 0</div>
 
         </div>
     </div>
@@ -106,10 +106,10 @@
 
             if (roundResult === 'win') {
                 document.getElementById(`round${currentRound}`).style.backgroundColor = '#84cc16';
-                resultMessage = `You win! ${humanChoice} beats ${computerChoice}`;
+                resultMessage = `You win!`;
             } else if (roundResult === 'lose') {
                 document.getElementById(`round${currentRound}`).style.backgroundColor = '#f43f5e';
-                resultMessage = `You lose! ${computerChoice} beats ${humanChoice}!`;
+                resultMessage = `You lose!`;
             } else {
                 document.getElementById(`round${currentRound}`).style.backgroundColor = '#78716c';
                 resultMessage = `It's a tie!`;
