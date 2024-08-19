@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full w-full overflow-hidden">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock, Paper, Scissors Game</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>  * {
+        touch-action: manipulation !important;
+    }</style>
 </head>
-<body>
-    <div id="homescreen" class="text-center bg-gray-100 h-screen w-screen flex justify-center items-center p-4">
+<body class="h-full w-full overflow-hidden">
+    <div id="homescreen" class="text-center bg-gray-100 min-h-full min-w-full flex justify-center items-center p-4">
         <div>
             <div class="font-mono text-4xl sm:text-6xl tracking-tighter mb-6 font-semibold">Rock Paper Scissors</div>
             <button onclick="hideHome()" class="px-6 h-12 uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 hover:bg-teal-300 text-black">Play now</button>
         </div>
     </div>
-    <div id="gamescreen" class="justify-center flex h-screen w-screen items-center text-center font-mono">
+    <div id="gamescreen" class="justify-center flex min-h-full min-w-full items-center text-center font-mono">
         <div class="mx-auto">
             <div class="flex mb-8 justify-center space-x-2">
                 <div id="round1" class="rounded-full h-12 w-12 border-2 border-black"></div>
@@ -32,8 +35,8 @@
 
         </div>
     </div>
-    <div id="newgamemodal" class="absolute inset-0 flex h-screen w-screen items-center justify-center bg-black bg-opacity-20 font-mono">
-        <div class="mx-auto w-screen max-w-sm bg-white pt-6 text-center text-black sm:text-5xl">
+    <div id="newgamemodal" class="absolute inset-0 flex min-h-full min-w-full items-center justify-center bg-black bg-opacity-20 font-mono">
+        <div class="mx-auto max-w-sm bg-white pt-6 text-center text-black sm:text-5xl">
           <div id="gamestatus" class="text-4xl font-semibold"></div>
           <div id="finalscore" class="tracking-tigher mb-4 text-xl"></div>
           <div onclick="backToHome()" class="mx-4 mb-4 border-2 border-black bg-rose-400 px-6 py-3 text-xl font-semibold uppercase tracking-wider text-black hover:bg-rose-300">Back to home screen</div>
@@ -42,6 +45,20 @@
     </div>
                
     <script>
+        document.addEventListener("gesturestart", function (e) {
+	e.preventDefault();
+    document.body.style.zoom = 1;
+});
+
+document.addEventListener("gesturechange", function (e) {
+	e.preventDefault();
+
+  document.body.style.zoom = 1;
+});
+document.addEventListener("gestureend", function (e) {
+	  e.preventDefault();
+    document.body.style.zoom = 1;
+});
         var home = document.getElementById("homescreen");
         var game = document.getElementById("gamescreen");
         var modal = document.getElementById("newgamemodal");
